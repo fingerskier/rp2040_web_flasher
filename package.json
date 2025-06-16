@@ -11,5 +11,8 @@
   "devDependencies": {
     "typescript": "~5.8.3",
     "vite": "^6.3.5"
+  },
+  "dependencies": {
+    "gh-pages": "^6.3.0"
   }
 }
