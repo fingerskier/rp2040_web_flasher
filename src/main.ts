@@ -20,8 +20,6 @@ const uf2Input = document.getElementById('uf2-file') as HTMLInputElement
 const uf2Btn = document.getElementById('upload-uf2') as HTMLButtonElement
 const pyInput = document.getElementById('py-file') as HTMLInputElement
 const pyBtn = document.getElementById('upload-py') as HTMLButtonElement
-const tailInput = document.getElementById('tail-lines') as HTMLInputElement
-const tailBtn = document.getElementById('show-tail') as HTMLButtonElement
 const logPre = document.getElementById('output-log') as HTMLPreElement
 
 connectBtn?.addEventListener('click', async () => {
@@ -48,8 +46,13 @@ pyBtn?.addEventListener('click', async () => {
   }
 })
 
-tailBtn?.addEventListener('click', () => {
-  const n = parseInt(tailInput.value) || 20
-  logPre.textContent = getLogTail(n)
-})
 
+let priorLogs
+
+setInterval(() => {
+  const newLogs = getLogTail(20)
+  if (newLogs !== priorLogs) {
+    logPre.textContent = newLogs
+    priorLogs = newLogs
+  }
+}, 250)
