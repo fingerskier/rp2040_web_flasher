@@ -2,6 +2,28 @@ export let port: any = null;
 let writer: WritableStreamDefaultWriter<Uint8Array> | null = null;
 let reader: ReadableStreamDefaultReader<string> | null = null;
 
+const logLines: string[] = [];
+let partial = '';
+const MAX_LOG_LINES = 500;
+
+async function readLoop() {
+  if (!reader) return;
+  partial = '';
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    if (value) {
+      partial += value;
+      const lines = partial.split(/\r?\n/);
+      partial = lines.pop() || '';
+      for (const line of lines) {
+        logLines.push(line);
+        if (logLines.length > MAX_LOG_LINES) logLines.shift();
+      }
+    }
+  }
+}
+
 const encoder = new TextEncoder();
 
 export async function connect() {
@@ -9,6 +31,7 @@ export async function connect() {
   await port.open({ baudRate: 115200 });
   writer = port.writable?.getWriter() || null;
   reader = port.readable?.pipeThrough(new TextDecoderStream()).getReader() || null;
+  readLoop();
 }
 
 export async function disconnect() {
@@ -23,6 +46,10 @@ export async function disconnect() {
 async function sendRaw(data: string) {
   if (!writer) throw new Error('Not connected');
   await writer.write(encoder.encode(data));
+}
+
+export function getLogTail(n: number): string {
+  return logLines.slice(-n).join('\n');
 }
 
 export async function sendCommand(cmd: string) {

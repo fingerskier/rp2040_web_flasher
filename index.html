@@ -33,6 +33,12 @@
         <input type="file" id="py-file" accept=".py" />
         <button id="upload-py">Upload .py</button>
       </div>
+
+      <div class="log">
+        <input type="number" id="tail-lines" value="20" min="1" />
+        <button id="show-tail">Show Tail</button>
+        <pre id="output-log"></pre>
+      </div>
     </div>
     <script type="module" src="/src/main.ts"></script>
   </body>

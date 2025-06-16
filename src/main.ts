@@ -7,6 +7,7 @@ import {
   sendCommand,
   copyUF2,
   uploadPyFile,
+  getLogTail,
 } from './lib.ts'
 
 const connectBtn = document.getElementById('connect-btn') as HTMLButtonElement
@@ -19,6 +20,9 @@ const uf2Input = document.getElementById('uf2-file') as HTMLInputElement
 const uf2Btn = document.getElementById('upload-uf2') as HTMLButtonElement
 const pyInput = document.getElementById('py-file') as HTMLInputElement
 const pyBtn = document.getElementById('upload-py') as HTMLButtonElement
+const tailInput = document.getElementById('tail-lines') as HTMLInputElement
+const tailBtn = document.getElementById('show-tail') as HTMLButtonElement
+const logPre = document.getElementById('output-log') as HTMLPreElement
 
 connectBtn?.addEventListener('click', async () => {
   await connect()
@@ -42,5 +46,10 @@ pyBtn?.addEventListener('click', async () => {
   if (pyInput.files?.length) {
     await uploadPyFile(pyInput.files[0])
   }
+})
+
+tailBtn?.addEventListener('click', () => {
+  const n = parseInt(tailInput.value) || 20
+  logPre.textContent = getLogTail(n)
 })
 
