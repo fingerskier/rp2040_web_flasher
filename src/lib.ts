@@ -26,10 +26,12 @@ async function sendRaw(data: string) {
 }
 
 export async function sendCommand(cmd: string) {
+  console.log('Sending command:', cmd);
   await sendRaw(cmd + '\r');
 }
 
 export async function triggerFsMode() {
+  await triggerReplMode()
   // Enter bootloader / mass storage mode
   await sendRaw('\x03import machine\nmachine.bootloader()\n');
 }
