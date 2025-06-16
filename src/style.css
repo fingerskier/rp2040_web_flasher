@@ -1,0 +1,13 @@
+body {
+  font-family: sans-serif;
+  margin: 2rem;
+}
+
+#app > div, #app > button {
+  margin-top: 1rem;
+}
+
+textarea {
+  width: 300px;
+  height: 80px;
+}

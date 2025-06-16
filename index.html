@@ -10,5 +10,30 @@
   </head>
   <body>
     <h1>RP2040 Web Flasher</h1>
+    <div id="app">
+      <button id="connect-btn">Connect</button>
+
+      <div class="commands">
+        <textarea id="cmd-input" placeholder="Enter command"></textarea>
+        <button id="send-cmd">Send</button>
+      </div>
+
+      <div class="quick">
+        <button id="fs-btn">FS Mode</button>
+        <button id="repl-btn">REPL Mode</button>
+        <button id="reboot-btn">Reboot</button>
+      </div>
+
+      <div class="upload">
+        <input type="file" id="uf2-file" accept=".uf2" />
+        <button id="upload-uf2">Upload UF2</button>
+      </div>
+
+      <div class="upload">
+        <input type="file" id="py-file" accept=".py" />
+        <button id="upload-py">Upload .py</button>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
