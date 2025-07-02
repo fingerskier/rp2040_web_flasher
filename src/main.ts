@@ -47,7 +47,7 @@ pyBtn?.addEventListener('click', async () => {
 })
 
 
-let priorLogs
+let priorLogs: string | undefined
 
 setInterval(() => {
   const newLogs = getLogTail(20)
