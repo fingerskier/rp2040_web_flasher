@@ -1,30 +1,12 @@
-# rp2040_web_flasher
-Tool for setting up an RP2040 device from a web-page
+# React + Vite
 
-## Getting Started
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-These steps will install dependencies and launch a local development
-server so you can work on the web flasher.
+Currently, two official plugins are available:
 
-1. Install [Node.js](https://nodejs.org/) (version 16 or later).
-2. Install project dependencies:
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-   ```bash
-   npm install
-   ```
+## Expanding the ESLint configuration
 
-3. Start the development server:
-
-   ```bash
-   npm run dev
-   ```
-
-   Vite will output a local URL (typically `http://localhost:5173`) you
-   can open in your browser.
-
-4. Create a production build with:
-
-   ```bash
-   npm run build
-   ```
-
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.

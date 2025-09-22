@@ -1,8 +1,8 @@
-export let port: any = null
-let writer: WritableStreamDefaultWriter<Uint8Array> | null = null
-let reader: ReadableStreamDefaultReader<string> | null = null
+export let port= null
+let writer = null
+let reader = null
 
-const logLines: string[] = []
+const logLines = []
 let partial = ''
 const MAX_LOG_LINES = 50
 
@@ -27,7 +27,7 @@ async function readLoop() {
 const encoder = new TextEncoder()
 
 export async function connect() {
-  port = await (navigator as any).serial.requestPort()
+  port = await (navigator).serial.requestPort()
   await port.open({ baudRate: 115200 })
   writer = port.writable?.getWriter() || null
   reader = port.readable?.pipeThrough(new TextDecoderStream()).getReader() || null
@@ -44,17 +44,19 @@ export async function disconnect() {
   port = null
 }
 
-async function sendRaw(data: string) {
+async function sendRaw(data) {
   console.log('Sending command:', data)
   if (!writer) throw new Error('Not connected')
   await writer.write(encoder.encode(data))
 }
 
-export function getLogTail(n: number): string {
-  return logLines.slice(-n).join('\n')
+export function getLogTail(n) {
+  // Get the last n lines from the log, convert them to strings and return
+  const these = logLines.slice(-n)
+  return these.map(line => line.toString())
 }
 
-export async function sendCommand(cmd: string) {
+export async function sendCommand(cmd) {
   await sendRaw(cmd + '\r')
 }
 
@@ -72,15 +74,15 @@ export async function reboot() {
   await sendRaw('\x03import machine\nmachine.reset()\n')
 }
 
-export async function copyUF2(file: File) {
-  const dir = await (window as any).showDirectoryPicker()
+export async function copyUF2(file) {
+  const dir = await (window).showDirectoryPicker()
   const handle = await dir.getFileHandle(file.name, { create: true })
   const writable = await handle.createWritable()
   await writable.write(await file.arrayBuffer())
   await writable.close()
 }
 
-export async function uploadPyFile(file: File) {
+export async function uploadFile(file) {
   const text = await file.text()
   // Enter paste mode Ctrl-E
   await sendRaw('\x05')
