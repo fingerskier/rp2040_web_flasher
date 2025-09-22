@@ -1,12 +1,23 @@
 #root {
   position: relative;
-  height: 100%;
-  width: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  overflow: hidden;
+}
+
+
+header {
+  height: 3rem;
+  margin: 0;
+  padding: 0;
 }
 
 
@@ -14,4 +25,14 @@ footer {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  max-height: 13rem;
+  overflow: auto;
+}
+
+
+main {
+  flex-grow: 1;
+  max-height: calc(100vh - 3rem - 13rem);
+  padding: 1rem;
+  overflow: auto;
 }

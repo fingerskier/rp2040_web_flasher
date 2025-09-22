@@ -1,4 +1,4 @@
-import React from 'react'
+import {useState} from 'react'
 import CommandButton from '@/com/CommandButton'
 import UploadFirmware from '@/com/UploadFirmware'
 import UploadFile from '@/com/UploadFile'
@@ -15,6 +15,9 @@ export default function Main() {
     isConnecting,
     error,
   } = useDevice()
+
+  const [msg, setMsg] = useState('')
+
 
   const handleConnect = async event => {
     event.preventDefault()
@@ -60,6 +63,15 @@ export default function Main() {
 
         <UploadFirmware />
         <UploadFile />
+      </section>
+
+      <section>
+        <h2>Advanced</h2>
+        <p>
+          <input type="text" value={msg} onChange={e => setMsg(e.target.value)} placeholder="custom message" />
+
+          <CommandButton label="Send" command={msg} />
+        </p>
       </section>
     </main>
   )
