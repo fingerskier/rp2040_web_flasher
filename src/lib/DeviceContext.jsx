@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useCallback, useContext, useMemo, useReducer, useRef } from 'react'
 
 const DeviceContext = createContext(null)
@@ -330,9 +331,19 @@ export function DeviceProvider({ children }) {
   }, [sendRaw])
 
   const copyUF2 = useCallback(async file => {
-    const dir = await window.showDirectoryPicker()
-    const handle = await dir.getFileHandle(file.name, { create: true })
-    const writable = await handle.createWritable()
+    let directoryHandle
+    try {
+      directoryHandle = await window.showDirectoryPicker({ mode: 'readwrite' })
+    } catch (error) {
+      if (error?.name === 'TypeError') {
+        directoryHandle = await window.showDirectoryPicker()
+      } else {
+        throw error
+      }
+    }
+
+    const fileHandle = await directoryHandle.getFileHandle(file.name, { create: true })
+    const writable = await fileHandle.createWritable()
     await writable.write(await file.arrayBuffer())
     await writable.close()
   }, [])
