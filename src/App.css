@@ -36,3 +36,10 @@ main {
   padding: 1rem;
   overflow: auto;
 }
+
+
+.logo {
+  height: 3rem;
+  vertical-align: middle;
+  margin-right: 0.5rem;
+}
