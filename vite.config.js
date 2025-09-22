@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react-swc'
 
 // https://vite.dev/config/
 export default defineConfig({
+  baseURL: '/rp2040_web_flasher',
   plugins: [react()],
   resolve: {
     alias: {
