@@ -1,28 +1,41 @@
 import React from 'react'
-import {sendCommand} from '@/device'
+import { useDevice } from '@/lib/DeviceContext'
 
+export default function CommandButton({ label, command }) {
+  const { sendCommand, isConnected } = useDevice()
 
-export default function CommandButton({label, command}) {
-  const run = async(event)=>{
+  const run = async event => {
     event.preventDefault()
 
-    // if command is a string, use `sendCommand`, otherwise call it as a function
+    const handleError = err => {
+      console.error('Error sending command:', err)
+      alert(`Error sending command: ${err.message || err}`)
+    }
+
     if (typeof command === 'string') {
-      const res = await sendCommand(command).catch(err=>{
-        console.error('Error sending command:', err)
-        alert('Error sending command: ' + err.message)
-      })
-      return
-    } else if (typeof command === 'function') {
-      command().catch(err=>{
-        console.error('Error sending command:', err)
-        alert('Error sending command: ' + err.message)
-      })
+      try {
+        await sendCommand(command)
+      } catch (err) {
+        handleError(err)
+      }
       return
     }
 
-    return false
+    if (typeof command === 'function') {
+      try {
+        await command()
+      } catch (err) {
+        handleError(err)
+      }
+      return
+    }
+
+    console.warn('CommandButton received unsupported command type:', typeof command)
   }
 
-  return <button onClick={run}>{label}</button>
+  return (
+    <button type="button" onClick={run} disabled={!isConnected}>
+      {label}
+    </button>
+  )
 }
