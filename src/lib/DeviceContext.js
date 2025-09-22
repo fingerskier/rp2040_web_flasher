@@ -330,7 +330,7 @@ export function DeviceProvider({ children }) {
   }, [sendRaw])
 
   const copyUF2 = useCallback(async file => {
-    const dir = await window.showDirectoryPicker()
+    const dir = await window.showDirectoryPicker({ mode: 'readwrite' })
     const handle = await dir.getFileHandle(file.name, { create: true })
     const writable = await handle.createWritable()
     await writable.write(await file.arrayBuffer())
