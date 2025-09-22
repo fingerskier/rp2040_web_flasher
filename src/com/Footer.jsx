@@ -1,24 +1,23 @@
-import {useEffect, useState} from 'react'
-import {getLogTail} from '@/device'
-
+import { useMemo } from 'react'
+import { useDevice } from '@/lib/DeviceContext'
 
 export default function Footer() {
-  const [log, setLog] = useState('')
+  const { getLogTail, isConnected } = useDevice()
+  const logLines = useMemo(() => getLogTail(20), [getLogTail])
 
-  const refreshLog = async()=>{
-    const newLog = getLogTail()
-    setLog(newLog)
-  }
-
-
-  useEffect(()=>{
-    const interval = setInterval(refreshLog, 1234)
-    return ()=>clearInterval(interval)
-  }, [])
-
-
-  return <footer>
-    <p>{JSON.stringify(log,null,2)}</p>
-    <p>© 2024 fingerskier</p>
-  </footer>
+  return (
+    <footer>
+      <section>
+        <h2>Device Log</h2>
+        <pre>
+          {logLines.length
+            ? logLines.join('\n')
+            : isConnected
+              ? 'Awaiting data…'
+              : 'Connect to a device to view logs.'}
+        </pre>
+      </section>
+      <p>© 2024 fingerskier</p>
+    </footer>
+  )
 }
