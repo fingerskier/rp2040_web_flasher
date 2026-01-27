@@ -1,12 +1,33 @@
-# React + Vite
+# RP2040 Web Flasher
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A browser-based tool for flashing and interacting with RP2040 microcontrollers running MicroPython or CircuitPython.
 
-Currently, two official plugins are available:
+**[Launch App](https://fingerskier.github.io/rp2040_web_flasher/)**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Requirements
 
-## Expanding the ESLint configuration
+- Chrome, Edge, or another browser with Web Serial API support
+- RP2040-based device connected via USB
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Usage
+
+1. **Connect** - Click the Connect button and select your RP2040 device from the browser prompt
+2. **FS Mode** - Enter bootloader/filesystem mode to flash new firmware
+3. **REPL Mode** - Access the MicroPython/CircuitPython REPL (sends Ctrl+C)
+4. **Reboot** - Restart the device
+5. **Upload Firmware** - Select a .uf2 file to copy to the device (requires FS Mode first)
+6. **Upload File** - Upload Python or text files directly to the device
+7. **Custom Commands** - Use the text input to send raw commands to the device
+
+## Development
+
+```bash
+npm install
+npm run dev
+```
+
+## Deployment
+
+```bash
+npm run deploy
+```
