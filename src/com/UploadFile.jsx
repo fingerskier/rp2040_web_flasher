@@ -13,12 +13,11 @@ export default function UploadFile() {
 
     try {
       await uploadFile(file)
+      fileInput.current.value = ''
     } catch (err) {
       console.error('Failed to upload file', err)
       alert(`Upload failed: ${err.message || err}`)
     }
-
-    return false
   }
 
   return (

@@ -13,12 +13,11 @@ export default function UploadFirmware() {
 
     try {
       await copyUF2(file)
+      fileInput.current.value = ''
     } catch (err) {
       console.error('Failed to copy UF2 file', err)
       alert(`Firmware upload failed: ${err.message || err}`)
     }
-
-    return false
   }
 
   return (

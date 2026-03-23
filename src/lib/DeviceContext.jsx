@@ -126,7 +126,10 @@ export function DeviceProvider({ children }) {
       }
     }
 
-    loop()
+    loop().catch(err => {
+      console.error('Unexpected serial reader error', err)
+      dispatch({ type: 'CONNECT_FAILURE', error: err })
+    })
   }, [appendLogLines])
 
   const startUsbReader = useCallback((device, endpointIn, packetSize = 64) => {
@@ -165,7 +168,10 @@ export function DeviceProvider({ children }) {
       }
     }
 
-    loop()
+    loop().catch(err => {
+      console.error('Unexpected USB reader error', err)
+      dispatch({ type: 'CONNECT_FAILURE', error: err })
+    })
   }, [appendLogLines])
 
   const disconnect = useCallback(async() => {
@@ -194,7 +200,7 @@ export function DeviceProvider({ children }) {
     } catch (error) {
       console.error('Error while disconnecting', error)
       dispatch({ type: 'DISCONNECT', error })
-      throw error
+      return
     }
 
     dispatch({ type: 'DISCONNECT' })
@@ -335,8 +341,14 @@ export function DeviceProvider({ children }) {
     try {
       directoryHandle = await window.showDirectoryPicker({ mode: 'readwrite' })
     } catch (error) {
+      if (error?.name === 'AbortError') return // user cancelled
       if (error?.name === 'TypeError') {
-        directoryHandle = await window.showDirectoryPicker()
+        try {
+          directoryHandle = await window.showDirectoryPicker()
+        } catch (retryError) {
+          if (retryError?.name === 'AbortError') return // user cancelled
+          throw retryError
+        }
       } else {
         throw error
       }
@@ -344,8 +356,13 @@ export function DeviceProvider({ children }) {
 
     const fileHandle = await directoryHandle.getFileHandle(file.name, { create: true })
     const writable = await fileHandle.createWritable()
-    await writable.write(await file.arrayBuffer())
-    await writable.close()
+    try {
+      await writable.write(await file.arrayBuffer())
+      await writable.close()
+    } catch (error) {
+      await writable.abort().catch(() => {})
+      throw error
+    }
   }, [])
 
   const uploadFile = useCallback(async file => {
