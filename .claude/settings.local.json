@@ -8,7 +8,9 @@
       "Bash(npx vite:*)",
       "Bash(npx eslint:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(find /c/dev/fingerskier/control/rp2040_web_flasher/src -type f \\\\\\(-name *.tsx -o -name *.ts -o -name *.jsx -o -name *.js -o -name *.css \\\\\\))",
+      "Bash(grep:*)"
     ]
   }
 }
