@@ -17,7 +17,7 @@ export default function Footer() {
               : 'Connect to a device to view logs.'}
         </pre>
       </section>
-      <p>© 2024 fingerskier</p>
+      <p>© 2025 fingerskier</p>
     </footer>
   )
 }

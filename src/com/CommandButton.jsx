@@ -1,4 +1,3 @@
-import React from 'react'
 import { useDevice } from '@/lib/DeviceContext'
 
 export default function CommandButton({ label, command }) {
