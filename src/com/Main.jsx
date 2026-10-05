@@ -33,37 +33,43 @@ export default function Main() {
 
   return (
     <main id="main-content" tabIndex={-1}>
-      <section>
-        <h2>Connection</h2>
-        <p>MicroPython only. Connect a board running MicroPython using Web Serial.</p>
-        <p role="status" aria-label="Connection status">Status: {isDisconnecting ? 'Disconnecting…' : isConnecting ? 'Connecting…' : isConnected ? 'Connected' : 'Disconnected'}</p>
+      <section className="panel connection-panel" aria-labelledby="connection-heading">
+        <div className="section-heading">
+          <h2 id="connection-heading">Connection</h2>
+          <p className={`connection-status ${isConnected && !isDisconnecting ? 'is-connected' : ''}`} role="status" aria-label="Connection status">Status: {isDisconnecting ? 'Disconnecting…' : isConnecting ? 'Connecting…' : isConnected ? 'Connected' : 'Disconnected'}</p>
+        </div>
+        <p>Connect a board running MicroPython via USB to get started.</p>
         {!serialSupported && <p>Web Serial requires HTTPS (or localhost) and a supported browser such as desktop Chrome or Edge.</p>}
         <div className="controls">
-          <button type="button" onClick={() => runConnection(connect)} disabled={!serialSupported || busy || isConnected}>Connect</button>
+          <button className="primary-button" type="button" onClick={() => runConnection(connect)} disabled={!serialSupported || busy || isConnected}>Connect</button>
           <button type="button" onClick={() => runConnection(disconnect)} disabled={busy || !isConnected}>Disconnect</button>
         </div>
         {errorMessage && <div><p role="alert">{errorMessage}</p><button type="button" onClick={() => { setLocalError(''); clearError() }}>Clear error</button></div>}
-        {operation && <section aria-label="Current operation">
+        {operation && <section className="operation-panel" aria-label="Current operation">
           <p role="status">{operation.label}{operation.total > 0 ? `: ${operation.completed} / ${operation.total}` : '…'}</p>
           <progress aria-label={operation.label} max={operation.total > 0 ? operation.total : 1} value={operation.total > 0 ? operation.completed : undefined} />
           <button type="button" onClick={cancelOperation}>Cancel operation</button>
         </section>}
       </section>
-      <section>
-        <h2>Basic functions</h2>
+      <div className="transfer-grid">
+        <UploadFile />
+        <UploadFirmware />
+      </div>
+      <section className="panel secondary-panel" aria-labelledby="actions-heading">
+        <h2 id="actions-heading">Device actions</h2>
+        <p>Switch modes or request a restart. Reconnect after rebooting.</p>
         <div className="controls">
           <CommandButton label="FS Mode" command={triggerFsMode} disabled={busy} />
           <CommandButton label="REPL Mode" command={triggerReplMode} disabled={busy} />
           <CommandButton label="Reboot" command={reboot} disabled={busy} />
         </div>
-        <UploadFirmware />
-        <UploadFile />
       </section>
-      <section>
-        <h2>Advanced</h2>
+      <section className="panel secondary-panel" aria-labelledby="advanced-heading">
+        <h2 id="advanced-heading">Advanced</h2>
+        <p id="command-help">Runs immediately on the connected board. Use with care.</p>
         <label htmlFor="custom-command">MicroPython command</label>
         <div className="controls">
-          <input id="custom-command" type="text" value={msg} disabled={busy || !isConnected} onChange={e => setMsg(e.target.value)} />
+          <input id="custom-command" aria-describedby="command-help" type="text" value={msg} disabled={busy || !isConnected} onChange={e => setMsg(e.target.value)} />
           <CommandButton label="Send" command={msg} disabled={busy || !msg.trim()} />
         </div>
       </section>

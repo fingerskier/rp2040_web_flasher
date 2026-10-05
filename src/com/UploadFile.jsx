@@ -40,12 +40,13 @@ export default function UploadFile() {
   }
 
   return (
-    <section>
-      <h3>Upload File</h3>
-      <p>Save one file to MicroPython with its original filename. Saving does not execute it. Replacing main.py or boot.py changes startup behavior on the next reset.</p>
-      <label>File to save <input type="file" ref={fileInput} disabled={busy || !isConnected} onChange={e => { setSelected(!!e.target.files?.length); setOverwrite(false); setStatus('') }} /></label>
+    <section className="panel transfer-panel" aria-labelledby="file-heading">
+      <h2 id="file-heading">File transfer</h2>
+      <p id="file-help">Save a file with its original name. Saving does not execute it.</p>
+      <p id="file-warning" className="helper-note">Replacing main.py or boot.py changes startup behavior on the next reset.</p>
+      <label>File to save <input type="file" aria-describedby="file-help file-warning" ref={fileInput} disabled={busy || !isConnected} onChange={e => { setSelected(!!e.target.files?.length); setOverwrite(false); setStatus('') }} /></label>
       <label className="confirmation"><input type="checkbox" disabled={busy || !isConnected} checked={overwrite} onChange={e => setOverwrite(e.target.checked)} /> I agree to replace any existing file with the same name.</label>
-      <button type="button" onClick={upload} disabled={!isConnected || busy || !selected || !overwrite}>Save file</button>
+      <button className="primary-button" type="button" onClick={upload} disabled={!isConnected || busy || !selected || !overwrite}>Save file</button>
       <p role="status">{status}</p>
       {error && <div><p role="alert">{error}</p><button type="button" onClick={() => setError('')}>Clear file error</button></div>}
     </section>

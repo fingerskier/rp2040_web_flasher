@@ -23,6 +23,27 @@ beforeEach(() => {
 afterEach(() => { cleanup(); vi.unstubAllGlobals() })
 
 describe('accessible page and log', () => {
+  it('organizes the workbench into named task regions', () => {
+    render(<><Main /><Footer /></>)
+    for (const name of ['Connection', 'File transfer', 'MicroPython firmware', 'Device actions', 'Advanced', 'Device log']) {
+      expect(screen.getByRole('region', { name })).toBeTruthy()
+    }
+    expect(screen.getByRole('heading', { name: 'File transfer' }).tagName).toBe('H2')
+    expect(screen.getByRole('heading', { name: 'MicroPython firmware' }).tagName).toBe('H2')
+  })
+  it('associates safety guidance with file pickers and the command field', () => {
+    render(<Main />)
+    for (const [label, guidance] of [
+      ['File to save', /startup behavior/],
+      ['MicroPython firmware (.uf2)', /exact board.*UF2 cannot identify.*BOOTSEL/],
+      ['MicroPython command', /Runs immediately/],
+    ]) {
+      const input = screen.getByLabelText(label)
+      const ids = (input.getAttribute('aria-describedby') || '').split(' ').filter(Boolean)
+      const description = ids.map(id => document.getElementById(id)?.textContent).join(' ')
+      expect(description).toMatch(guidance)
+    }
+  })
   it('renders bounded log lines and the partial prompt with a clear control', async () => {
     logState.logs = Array.from({ length: 30 }, (_, i) => `line-${i}`)
     logState.partial = '>>> '
