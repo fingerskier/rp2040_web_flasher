@@ -1,45 +1,53 @@
 #root {
-  position: relative;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: 0;
-  padding: 0;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-
-  overflow: hidden;
 }
 
 
-header {
-  height: 3rem;
-  margin: 0;
-  padding: 0;
-}
+header { padding: 0.75rem 1rem; }
+header h1 { margin: 0; font-size: clamp(1.35rem, 4vw, 2rem); }
+.skip-link { position: absolute; left: 1rem; top: -5rem; z-index: 1; }
+.skip-link:focus { top: 0.5rem; padding: 0.75rem; background: #242424; }
 
 
 footer {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+  align-items: end;
+  border-top: 1px solid #555;
+}
+.device-log { flex: 1 1 24rem; min-width: 0; }
+.device-log h2 { display: inline-block; margin: 0 1rem 0.5rem 0; }
+.device-log pre {
   max-height: 13rem;
+  min-height: 3rem;
   overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  padding: 0.75rem;
+  background: #191919;
 }
 
 
-main {
-  flex-grow: 1;
-  max-height: calc(100vh - 3rem - 13rem);
-  padding: 1rem;
-  overflow: auto;
+main { flex-grow: 1; padding: 0 1rem 1rem; min-width: 0; }
+main section { margin-bottom: 1.5rem; }
+main p { max-width: 75ch; }
+.controls { display: flex; flex-wrap: wrap; align-items: start; gap: 0.5rem; }
+.confirmation { display: block; margin: 0.75rem 0; }
+.command-control > [role="status"] { display: block; margin-top: 0.25rem; font-size: 0.9rem; }
+progress { max-width: 100%; margin-right: 0.75rem; }
+@media (max-width: 480px) {
+  label input[type="file"] { display: block; margin: 0.5rem 0; width: 100%; }
+  header, main, footer { padding-left: 0.75rem; padding-right: 0.75rem; }
 }
 
 
 .logo {
   height: 3rem;
+  width: auto;
   vertical-align: middle;
   margin-right: 0.5rem;
 }

@@ -1,21 +1,16 @@
-import { useMemo } from 'react'
-import { useDevice } from '@/lib/DeviceContext'
+import { useDeviceLogs } from '@/lib/DeviceContext'
 
 export default function Footer() {
-  const { getLogTail, isConnected } = useDevice()
-  const logLines = useMemo(() => getLogTail(20), [getLogTail])
+  const { logs, partial, clearLogs } = useDeviceLogs()
+  const logLines = logs.slice(-20)
+  const text = [...logLines, ...(partial ? [partial] : [])].join('\n')
 
   return (
     <footer>
-      <section>
-        <h2>Device Log</h2>
-        <pre>
-          {logLines.length
-            ? logLines.join('\n')
-            : isConnected
-              ? 'Awaiting data…'
-              : 'Connect to a device to view logs.'}
-        </pre>
+      <section className="device-log">
+        <h2 id="device-log-heading">Device log</h2>
+        <button type="button" onClick={clearLogs}>Clear logs</button>
+        <pre role="log" aria-labelledby="device-log-heading" aria-live="polite" aria-relevant="additions text" tabIndex={0}>{text || 'No device output yet.'}</pre>
       </section>
       <p>© 2025 fingerskier</p>
     </footer>

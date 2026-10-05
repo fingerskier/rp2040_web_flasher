@@ -5,10 +5,21 @@
   background-color: #242424;
 }
 
+* { box-sizing: border-box; }
+
 body {
   margin: 0;
-  padding: 0;
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
+  min-width: 280px;
+  min-height: 100vh;
 }
+
+button, input { font: inherit; }
+button, input[type="file"] { max-width: 100%; }
+button { cursor: pointer; padding: 0.45rem 0.75rem; }
+button:disabled { cursor: not-allowed; opacity: 0.6; }
+input[type="text"] { min-width: 0; max-width: 100%; padding: 0.45rem; }
+a { color: #a6d5ff; }
+:focus-visible { outline: 3px solid #80caff; outline-offset: 3px; }
+[role="alert"] { color: #ffb4ab; overflow-wrap: anywhere; }
+[role="status"] { overflow-wrap: anywhere; }
+[role="status"]:empty { display: none; }

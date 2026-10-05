@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'" />
     
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -11,7 +12,7 @@
     <link rel="manifest" href="/site.webmanifest" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Flash firmware and upload files to RP2040 devices from your browser using Web Serial and WebUSB" />
+    <meta name="description" content="Copy MicroPython firmware and transfer individual files to RP2040 devices locally from your browser using Web Serial." />
     <title>RP2040 Web Flasher</title>
   </head>
   <body>

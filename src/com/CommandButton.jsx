@@ -1,40 +1,38 @@
+import { useRef, useState } from 'react'
 import { useDevice } from '@/lib/DeviceContext'
 
-export default function CommandButton({ label, command }) {
-  const { sendCommand, isConnected } = useDevice()
+export default function CommandButton({ label, command, disabled = false }) {
+  const { sendCommand, isConnected, isBusy, isConnecting, isDisconnecting } = useDevice()
+  const inFlight = useRef(false)
+  const [pending, setPending] = useState(false)
+  const [error, setError] = useState('')
+  const [status, setStatus] = useState('')
+  const unavailable = disabled || !isConnected || isBusy || isConnecting || isDisconnecting || pending
 
-  const run = async event => {
-    event.preventDefault()
-
-    const handleError = err => {
-      console.error('Error sending command:', err)
-      alert(`Error sending command: ${err.message || err}`)
+  const run = async () => {
+    if (unavailable || inFlight.current) return
+    inFlight.current = true
+    setPending(true)
+    setError('')
+    setStatus('')
+    try {
+      const result = typeof command === 'string' ? await sendCommand(command) : await command()
+      setStatus(result?.status === 'requested'
+        ? `${label} requested. Reconnect when the board is ready; startup has not been verified.`
+        : `${label} complete.`)
+    } catch (err) {
+      if (err.name !== 'AbortError') setError(err.message || String(err))
+    } finally {
+      inFlight.current = false
+      setPending(false)
     }
-
-    if (typeof command === 'string') {
-      try {
-        await sendCommand(command)
-      } catch (err) {
-        handleError(err)
-      }
-      return
-    }
-
-    if (typeof command === 'function') {
-      try {
-        await command()
-      } catch (err) {
-        handleError(err)
-      }
-      return
-    }
-
-    console.warn('CommandButton received unsupported command type:', typeof command)
   }
 
   return (
-    <button type="button" onClick={run} disabled={!isConnected}>
-      {label}
-    </button>
+    <div className="command-control">
+      <button type="button" onClick={run} disabled={unavailable}>{label}</button>
+      <span role="status">{status}</span>
+      {error && <div><p role="alert">{error}</p><button type="button" onClick={() => setError('')}>Clear {label} error</button></div>}
+    </div>
   )
 }
